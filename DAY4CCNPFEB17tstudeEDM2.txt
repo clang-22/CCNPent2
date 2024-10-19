@@ -218,7 +218,7 @@ ip route 10.0.0.0 255.0.0.0 207.7.7.1
 end
 @@ISP3:
 CONFIG T
-router bgp 3
+router bgp 300
 bgp log-neighbor-changes
 neighbor 32.3.2.2 remote-as 200
 neighbor 35.3.5.5 remote-as 450
@@ -366,17 +366,19 @@ IPV6 ADDRESSING FOR THE ISP'S
 	ipv6 unicast-routing
 	int lo4
 		ipv6 add b55::1/128
-	router bgp 45
+		ipv6 add 8:8:8:8::8888/128
+	router bgp 450
 	    !no bgp default ipv4-unicast
 		!bgp log-neighbor-changes
-		neigh b:3:4:b::3 remote-as 3
-		neigh b:2:4:b::2 remote-as 2
-		neigh b:1:4:b::4 remote-as 45
+		neigh b:3:4:b::3 remote-as 300
+		neigh b:2:4:b::2 remote-as 200
+		neigh b:1:4:b::4 remote-as 450
 		address-family ipv6
 			neigh b:3:4:b::3 activate
 			neigh b:2:4:b::2 activate
 			neigh b:1:4:b::4 activate
 			network b55::1/128
+			network 8:8:8:8::8888/128
 			network b:3:4:b::/64
 			network b:2:4:b::/64
 			network b:1:4:b::/64
@@ -384,29 +386,32 @@ IPV6 ADDRESSING FOR THE ISP'S
 			
 @ISP3
 	conf t
-		ipv6 unicast-routing
-		int lo3
-			ipv6 add b33::1/128
-		router bgp 3
-			neigh b:3:4:b::5 remote-as 45
-			neigh b:1:2:b::2 remote-as 2
-			neigh b:1:33:b::1 remote-as 1
-			address-family ipv6
-				neigh b:3:4:b::5 activate
-				neigh b:1:2:b::2 activate
-				neigh b:1:33:b::1 activate
-				network b:3:4:b::/64
-				network b:1:2:b::/64
-				network b:1:33:b::/64
-				network b33::1/128
-				end
+	ipv6 unicast-routing
+	int lo3
+	ipv6 add b33::1/128
+	router bgp 300
+	neigh b:3:4:b::5 remote-as 450
+	neigh b:1:2:b::2 remote-as 200
+	neigh b:1:33:b::1 remote-as 100
+	address-family ipv6
+	neigh b:3:4:b::5 activate
+	neigh b:1:2:b::2 activate
+	neigh b:1:33:b::1 activate
+	network b:3:4:b::/64
+	network b:1:2:b::/64
+	network b:1:33:b::/64
+	network b33::1/128
+	end
 				
 @ISP2
 	conf t
 	ipv6 unicast-routing
 	int lo2
 		ipv6 add b22::1/128
-		router bgp 2
+		router bgp 200
+		neigh b:2:1:b::4 remote-as 450
+		neigh b:2:1:b::5 remote-as 450
+		neigh b:2:1:b::5 remote-as 300
 ___________________________?
 ___________________________?
 ___________________________?

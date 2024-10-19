@@ -410,8 +410,19 @@ IPV6 ADDRESSING FOR THE ISP'S
 		ipv6 add b22::1/128
 		router bgp 200
 		neigh b:2:1:b::4 remote-as 450
-		neigh b:2:1:b::5 remote-as 450
-		neigh b:2:1:b::5 remote-as 300
+		neigh b:2:4:b::5 remote-as 450
+		neigh b:1:2:b::3 remote-as 300
+		neigh b:1:22:b::1 remote-as 100
+		address-family ipv6
+		network b:2:4:b::5 activate
+		network b:2:1:b::4 activate
+		network b:1:2:b::3 activate
+		network b:1:22:b::1 activate
+		network b:1:2:b::/64
+		network b:2:1:b::/64
+		network b:1:22:b::/64
+		network b22::1/128
+		end
 ___________________________?
 ___________________________?
 ___________________________?

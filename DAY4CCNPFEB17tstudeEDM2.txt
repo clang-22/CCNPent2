@@ -122,21 +122,31 @@ R4:
 config t
 router ospf 1
 network 10.1.1.8 0.0.0.3 area 34
-
+network 4.4.4.4 0.0.0.0 area 34
+int lo 0
+ip address 4.4.4.4 255.255.255.255
 R3:
 config t
+int lo 0
+ip address 3.3.3.3 255.255.255.255
 router ospf 1
+network 3.3.3.3 0.0.0.0 area 0
 network 10.1.1.4 0.0.0.3 area 0
 network 10.1.1.8 0.0.0.3 area 34
 
 R2:
 config t
+int lo 0
+ip address 2.2.2.2 255.255.255.255
 router ospf 1
+network 2.2.2.2 0.0.0.0 area 0
 network 10.1.1.4 0.0.0.3 area 0
 network 10.1.1.0 0.0.0.3 area 12
 
 R1:
 config t
+int lo 0
+ip address 1.1.1.1 255.255.255.255
 router ospf 1
 network 10.1.1.0 0.0.0.3 area 12
 
@@ -154,25 +164,30 @@ ip route 0.0.0.0 0.0.0.0 10.2.1.1 5
 ip route 0.0.0.0 0.0.0.0 10.2.1.2 1
 end
 
+
+
+
+
+
 R1 BGP:
 config t
-router bgp 1
+router bgp 100
  bgp log-neighbor-changes
- neighbor 208.8.8.4 remote-as 45
- neighbor 207.7.7.2 remote-as 2
- neighbor 209.9.9.3 remote-as 3
+ neighbor 208.8.8.4 remote-as 450
+ neighbor 207.7.7.2 remote-as 200
+ neighbor 209.9.9.3 remote-as 300
  network 10.0.0.0 Mask 255.255.255.252
- network 207.7.7.0
- network 208.8.8.0
- network 209.9.9.0
+ network 207.7.7.0 mask 255.255.255.0
+ network 208.8.8.0 mask 255.255.255.0
+ network 209.9.9.0 mask 255.255.255.252
 end
 @@@ISP1:
 CONFIG T
-router bgp 45
+router bgp 450
 bgp log-neighbor-changes
-neighbor 24.2.4.2 remote-as 2
-neighbor 45.4.5.5 remote-as 45
-neighbor 208.8.8.1 remote-as 1
+neighbor 24.2.4.2 remote-as 200
+neighbor 45.4.5.5 remote-as 450
+neighbor 208.8.8.1 remote-as 100
 network 208.8.8.0
 network 24.2.4.0 mask 255.255.255.0
 network 44.44.44.44 mask 255.255.255.255
@@ -185,12 +200,12 @@ end
 
 @@@ISP2:
 config t
-router bgp 2
+router bgp 200
 bgp log-neighbor-changes
-neighbor 24.2.4.4 remote-as 45
-neighbor 25.2.5.5 remote-as 45
-neighbor 32.3.2.3 remote-as 3
-neighbor 207.7.7.1 remote-as 1
+neighbor 24.2.4.4 remote-as 450
+neighbor 25.2.5.5 remote-as 450
+neighbor 32.3.2.3 remote-as 300
+neighbor 207.7.7.1 remote-as 100
 network 207.0.0.0
 network 22.22.22.22 mask 255.255.255.255
 network 24.2.4.0 mask 255.255.255.0
@@ -205,9 +220,9 @@ end
 CONFIG T
 router bgp 3
 bgp log-neighbor-changes
-neighbor 32.3.2.2 remote-as 2
-neighbor 35.3.5.5 remote-as 45
-neighbor 209.9.9.1 remote-as 1
+neighbor 32.3.2.2 remote-as 200
+neighbor 35.3.5.5 remote-as 450
+neighbor 209.9.9.1 remote-as 100
 network 209.9.9.0
 network 32.3.2.0 mask 255.255.255.0
 network 33.33.33.33 mask 255.255.255.255
@@ -245,7 +260,7 @@ router eigrp 100
   redistribute ospf 1 metric 1544 2000 255 1 1500
 
 R1:
-!redistrubte internet routes to ospf from BGP.
+!redistrubte internet routes to ospf from BGP. 
 config t
 router ospf 1
  default-information originate
